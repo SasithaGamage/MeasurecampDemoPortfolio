@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sasitha Gamage | Data & Marketing Analytics</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f8f8fa;
+      color: #333;
+    }
+
+    header {
+      background: #1d3557;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    section {
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    #about {
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+
+    #contact {
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      color: #1d3557;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .error {
+      color: #d93025;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background: #457b9d;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #a6c1e1;
+    }
+
+    .success {
+      color: #0f9d58;
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Sasitha Gamage</h1>
+    <p>Marketing Analytics | Data Engineering | GA4 & BigQuery Specialist</p>
+  </header>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Hello! I'm Sasitha, a data-driven marketing analyst who helps businesses unlock insights through tools like Google Analytics, BigQuery, and server-side tagging. Whether it's cleaning messy data, automating reporting, or forecasting campaign performance, I'm here to bring clarity to your marketing stack.</p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <p>Have a project in mind? Let's talk. Fill out the form below and I’ll get back to you shortly.</p>
+    <form id="contactForm" novalidate>
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" required />
+        <div class="error" id="nameError"></div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required />
+        <div class="error" id="emailError"></div>
+      </div>
+      <div class="form-group">
+        <label for="phone">Mobile Number</label>
+        <input type="tel" id="phone" name="phone" required />
+        <div class="error" id="phoneError"></div>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+        <div class="error" id="messageError"></div>
+      </div>
+      <button type="submit" id="submitBtn">Send Message</button>
+    </form>
+    <div class="success" id="successMessage" style="display: none;">Thank you for contacting me! I'll respond soon.</div>
+  </section>
+
+  <footer>
+    &copy; 2025 Sasitha Gamage. All rights reserved.
+  </footer>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function pushDataLayerEvent(event, details) {
+      window.dataLayer.push({
+        event: event,
+        ...details
+      });
+      console.log('dataLayer push:', { event, ...details });
+    }
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      document.getElementById('nameError').textContent = '';
+      document.getElementById('emailError').textContent = '';
+      document.getElementById('phoneError').textContent = '';
+      document.getElementById('messageError').textContent = '';
+
+      let valid = true;
+      const name = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      // ✅ Corrected Regex - No double backslashes
+      if (!/^[A-Za-z]+\s[A-Za-z]+/.test(name)) {
+        valid = false;
+        document.getElementById('nameError').textContent = 'Please enter your full name (first and last name).';
+      }
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        valid = false;
+        document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+      }
+
+      const phonePattern = /^\d{10}$/;
+      if (!phonePattern.test(phone)) {
+        valid = false;
+        document.getElementById('phoneError').textContent = 'Please enter a 10-digit mobile number.';
+      }
+
+      if (!message) {
+        valid = false;
+        document.getElementById('messageError').textContent = 'Please enter a message.';
+      }
+
+      if (valid) {
+        document.getElementById('submitBtn').disabled = true;
+
+        setTimeout(() => {
+          document.getElementById('successMessage').style.display = 'block';
+
+          pushDataLayerEvent('contactFormSubmitted', {
+            formId: 'contactForm',
+            fullName: name,
+            email: email,
+            phone: phone,
+            message: message
+          });
+        }, 500);
+      }
+    });
+  </script>
+
+</body>
+</html>
